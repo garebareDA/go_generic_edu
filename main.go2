@@ -1,0 +1,32 @@
+package main
+
+import (
+	"fmt"
+)
+
+type Addable[t any] interface {
+	Add(v1 t, v2 t) t
+}
+
+type A struct {
+	val string
+}
+
+func (a A) Add(v1 A, v2 A) A {
+	return A {v1.val + v2.val}
+}
+
+func Sum[t Addable[t]](l []t) t {
+	var sum t
+	for _, v := range l {
+			sum = v.Add(sum, v)
+	}
+	return sum
+}
+
+func main() {
+	AList := []A{A{"a"}, A{"b"}}
+
+	sum := Sum(AList)
+	fmt.Printf("sum: %v, type: %T\n", sum, sum)
+}
